@@ -14,8 +14,6 @@ class Product {
   static const UPDATEDAT = "updatedAt";
   static const SUBINGREDIENTS = "subIngredients";
 
-  Product();
-
   String _id;
   String _name;
   String _type;
@@ -28,6 +26,8 @@ class Product {
   String _salePrice;
   Timestamp _createdAt;
   Timestamp _updatedAt;
+
+  Product();
 
 //  getters
   String get name => _name;
@@ -46,11 +46,11 @@ class Product {
   Product.fromSnapshot(DocumentSnapshot snapshot) {
     Map data = snapshot.data;
     _name = data[NAME];
-    _id = data[NAME];
+    _id = data[ID];
     _type = data[TYPE];
-    _price = data[PRICE];
+    _price = data[PRICE].toString();
     _quantity = data[QUANTITY];
-    _salePrice = data[SALEPRICE];
+    _salePrice = data[SALEPRICE].toString();
     _serialNumber = data[SERIALNUMBER];
     _sizes = data[SIZES];
     _subIngredients = data[SUBINGREDIENTS];
@@ -59,20 +59,20 @@ class Product {
     _updatedAt = data[UPDATEDAT];
   }
 
-  Product.fromMap(Map<String, dynamic> data) {
-    _name = data[NAME];
-    _id = data[NAME];
-    _type = data[TYPE];
-    _price = data[PRICE];
-    _quantity = data[QUANTITY];
-    _salePrice = data[SALEPRICE];
-    _serialNumber = data[SERIALNUMBER];
-    _subIngredients = data[SUBINGREDIENTS];
-    _sizes = data[SIZES];
-    _image = data[IMAGES];
-    _createdAt = data[CREATEDAT];
-    _updatedAt = data[UPDATEDAT];
-  }
+//  Product.fromMap(Map<String, dynamic> data) {
+//    name = data['name'];
+//    id = data['id'];
+//    type = data['type'];
+//    price = data['price'];
+//    quantity = data['quantity'];
+//    salePrice = data['salePrice'];
+//    serialNumber = data['serialNumber'];
+//    sizes = data['sizes'];
+//    subIngredients = data['subIngredients'];
+//    image = data['image'];
+//    createdAt = data['createdAt'];
+//    updatedAt = data['updatedAt'];
+//  }
 
   Map<String, dynamic> toMap() {
     return {

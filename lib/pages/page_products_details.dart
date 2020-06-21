@@ -1,110 +1,193 @@
 import 'package:flutter/material.dart';
-import 'package:posapp/api/user_api.dart';
-import 'package:posapp/components/form_product.dart';
-import 'package:posapp/models/products.dart';
-import 'package:posapp/notifier/product_notifier.dart';
-import 'package:provider/provider.dart';
 
-class ProductDetail extends StatelessWidget {
+class ProductDetails extends StatefulWidget {
+  @override
+  _ProductDetailsState createState() => _ProductDetailsState();
+}
+
+class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
-    ProductNotifier foodNotifier = Provider.of<ProductNotifier>(context);
-
-    _onProductDeleted(Product food) {
-      Navigator.pop(context);
-      foodNotifier.deleteProduct(food);
-    }
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(foodNotifier.currentProduct.name),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
+      body: SafeArea(
           child: Container(
-            child: Column(
+        color: Colors.black.withOpacity(0.9),
+        child: Column(
+          children: <Widget>[
+            Stack(
               children: <Widget>[
-                Image.network(
-                  foodNotifier.currentProduct.images != null
-                      ? foodNotifier.currentProduct.images
-                      : 'https://www.testingxperts.com/wp-content/uploads/2019/02/placeholder-img.jpg',
-                  width: MediaQuery.of(context).size.width,
-                  height: 250,
-                  fit: BoxFit.fitWidth,
+                Image.asset(
+                  "images/m2.jpg",
+                  height: 350,
+                  fit: BoxFit.cover,
                 ),
-                SizedBox(height: 24),
-                Text(
-                  foodNotifier.currentProduct.name,
-                  style: TextStyle(
-                    fontSize: 40,
-                  ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                        // Box decoration takes a gradient
+                        gradient: LinearGradient(
+                          // Where the linear gradient begins and ends
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          // Add one stop for each color. Stops should increase from 0 to 1
+                          colors: [
+                            // Colors are easy thanks to Flutter's Colors class.
+                            Colors.black.withOpacity(0.7),
+                            Colors.black.withOpacity(0.5),
+                            Colors.black.withOpacity(0.07),
+                            Colors.black.withOpacity(0.05),
+                            Colors.black.withOpacity(0.025),
+                          ],
+                        ),
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Container())),
                 ),
-                Text(
-                  'SalePrice: ${foodNotifier.currentProduct.salePrice}',
-                  style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            })),
+                    Row(
+                      children: <Widget>[
+                        Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: Card(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(Icons.shopping_cart),
+                              ),
+                            )),
+                        Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: Card(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(Icons.favorite_border),
+                              ),
+                            )),
+                      ],
+                    ),
+                  ],
                 ),
-                SizedBox(height: 20),
-                Text(
-                  "Ingredients",
-                  style: TextStyle(
-                      fontSize: 18, decoration: TextDecoration.underline),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                      height: 350,
+                      decoration: BoxDecoration(
+                        // Box decoration takes a gradient
+                        gradient: LinearGradient(
+                          // Where the linear gradient begins and ends
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          // Add one stop for each color. Stops should increase from 0 to 1
+                          colors: [
+                            // Colors are easy thanks to Flutter's Colors class.
+                            Colors.black.withOpacity(0.8),
+                            Colors.black.withOpacity(0.6),
+                            Colors.black.withOpacity(0.6),
+                            Colors.black.withOpacity(0.4),
+                            Colors.black.withOpacity(0.07),
+                            Colors.black.withOpacity(0.05),
+                            Colors.black.withOpacity(0.025),
+                          ],
+                        ),
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Container())),
                 ),
-                SizedBox(height: 16),
-                GridView.count(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  padding: EdgeInsets.all(8),
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 4,
-                  mainAxisSpacing: 4,
-                  children: foodNotifier.currentProduct.subIngredients
-                      .map(
-                        (ingredient) => Card(
-                          color: Colors.black54,
-                          child: Center(
+                Positioned(
+                    bottom: 0,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
                             child: Text(
-                              ingredient,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                              'Product Blazer',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 20),
                             ),
                           ),
-                        ),
-                      )
-                      .toList(),
-                )
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              '\$35.99',
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
               ],
             ),
-          ),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black,
+                          offset: Offset(2, 5),
+                          blurRadius: 10)
+                    ]),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(9),
+                      child: Material(
+                          borderRadius: BorderRadius.circular(15.0),
+                          color: Colors.white,
+                          elevation: 0.0,
+                          child: MaterialButton(
+                            onPressed: () {},
+                            minWidth: MediaQuery.of(context).size.width,
+                            child: Text(
+                              "Buy now",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0),
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
         ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          FloatingActionButton(
-            heroTag: 'button1',
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (BuildContext context) {
-                  return ProductForm(
-                    isUpdating: true,
-                  );
-                }),
-              );
-            },
-            child: Icon(Icons.edit),
-            foregroundColor: Colors.white,
-          ),
-          SizedBox(height: 20),
-          FloatingActionButton(
-            heroTag: 'button2',
-            onPressed: () =>
-                deleteProduct(foodNotifier.currentProduct, _onProductDeleted),
-            child: Icon(Icons.delete),
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-          ),
-        ],
-      ),
+      )),
     );
   }
 }

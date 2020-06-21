@@ -7,7 +7,11 @@ import 'package:posapp/notifier/product_notifier.dart';
 import 'package:posapp/pages/home.dart';
 import 'package:posapp/pages/page_add_products.dart';
 import 'package:posapp/pages/page_products_details.dart';
+import 'package:posapp/provider/products_provider.dart';
+import 'package:posapp/services/styles.dart';
+import 'package:posapp/widgets/product_card.dart';
 import 'package:provider/provider.dart';
+import 'package:posapp/bloc/main_bloc.dart';
 
 class ProductsPage extends StatefulWidget {
   @override
@@ -16,20 +20,10 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> {
   @override
-  void initState() {
-    ProductNotifier productNotifier =
-        Provider.of<ProductNotifier>(context, listen: false);
-    getProducts(productNotifier);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    ProductNotifier productNotifier = Provider.of<ProductNotifier>(context);
-    Future<void> _refreshList() async {
-      getProducts(productNotifier);
-    }
+//    final products = Provider.of<ProductsProvider>(context);
 
+    print("building Products");
     return Scaffold(
       appBar: new AppBar(
         iconTheme: new IconThemeData(color: Colors.purple),
@@ -41,41 +35,46 @@ class _ProductsPageState extends State<ProductsPage> {
               color: Colors.purple, fontWeight: FontWeight.bold, fontSize: 30),
         ),
       ),
-      body: new RefreshIndicator(
-        child: ListView.separated(
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              leading: Image.network(
-                productNotifier.productList[index].images != null
-                    ? productNotifier.productList[index].images
-                    : 'https://www.testingxperts.com/wp-content/uploads/2019/02/placeholder-img.jpg',
-                width: 120,
-                fit: BoxFit.fitWidth,
-              ),
-              title: Text(productNotifier.productList[index].name),
-              subtitle: Text(productNotifier.productList[index].salePrice),
-              onTap: () {
-                productNotifier.currentProduct =
-                    productNotifier.productList[index];
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return ProductDetail();
-                }));
-              },
-            );
-          },
-          itemCount: productNotifier.productList.length,
-          separatorBuilder: (BuildContext context, int index) {
-            return Divider(
-              color: Colors.black,
-            );
-          },
-        ),
-        onRefresh: _refreshList,
+      body: new Column(
+        children: <Widget>[
+          Flexible(child: Products()),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
+//      new RefreshIndicator(
+//        child: ListView.separated(
+//          itemBuilder: (BuildContext context, int index) {
+//            return ListTile(
+//              leading: Image.network(
+//                productNotifier.productList[index].images != null
+//                    ? productNotifier.productList[index].images
+//                    : 'https://www.testingxperts.com/wp-content/uploads/2019/02/placeholder-img.jpg',
+//                width: 120,
+//                fit: BoxFit.fitWidth,
+//              ),
+//              title: Text(productNotifier.productList[index].name),
+//              subtitle: Text(productNotifier.productList[index].salePrice),
+//              onTap: () {
+//                productNotifier.currentProduct =
+//                    productNotifier.productList[index];
+//                Navigator.of(context)
+//                    .push(MaterialPageRoute(builder: (BuildContext context) {
+//                  return ProductDetail();
+//                }));
+//              },
+//            );
+//          },
+//          itemCount: productNotifier.productList.length,
+//          separatorBuilder: (BuildContext context, int index) {
+//            return Divider(
+//              color: Colors.black,
+//            );
+//          },
+//        ),
+//        onRefresh: _refreshList,
+//      ),
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: "btn1",
         onPressed: () {
-          productNotifier.currentProduct = null;
           Navigator.of(context).push(
             MaterialPageRoute(builder: (BuildContext context) {
               return addProducts(
@@ -84,9 +83,12 @@ class _ProductsPageState extends State<ProductsPage> {
             }),
           );
         },
-        child: Icon(Icons.add),
+        icon: Icon(Icons.add),
+        label: Text("เพิ่มสินค้า"),
         foregroundColor: Colors.white,
+        backgroundColor: Colors.orange,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
 //      ),ListView(
 //        margin: const EdgeInsets.only(left: 40, right: 40),
 //        child: ClipRRect(

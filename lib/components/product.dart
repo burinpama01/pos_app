@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:posapp/api/user_api.dart';
-import 'package:posapp/notifier/product_notifier.dart';
-import 'package:posapp/pages/page_products_details.dart';
-import 'package:provider/provider.dart';
 
 class Products extends StatefulWidget {
   @override
@@ -10,81 +6,128 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-//  @override
-//  void initState() {
-//    ProductNotifier productNotifier =
-//        Provider.of<ProductNotifier>(context, listen: false);
-//    getProducts(productNotifier);
-//    super.initState();
-//  }
-
-//  var product_list = [
-//    {
-//      "name": "Fanta",
-//      "picture": "images/products/fanta01.jpg",
-//      "price": 10,
-//      "quantity": 5,
-//    },
-//  ];
+  var product_list = [
+    {
+      "name": "Blazer",
+      "picture": "images/products/coke-zero01.jpg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Red dress",
+      "picture": "images/products/fanta01.jpg",
+      "old_price": 100,
+      "price": 50,
+    },
+    {
+      "name": "Red dress",
+      "picture": "images/products/fanta02.jpg",
+      "old_price": 100,
+      "price": 50,
+    },
+    {
+      "name": "Red dress",
+      "picture": "images/products/jabjai01.jpg",
+      "old_price": 100,
+      "price": 50,
+    },
+    {
+      "name": "Blazer",
+      "picture": "images/products/coke-zero01.jpg",
+      "old_price": 120,
+      "price": 85,
+    },
+    {
+      "name": "Red dress",
+      "picture": "images/products/fanta01.jpg",
+      "old_price": 100,
+      "price": 50,
+    },
+    {
+      "name": "Red dress",
+      "picture": "images/products/fanta02.jpg",
+      "old_price": 100,
+      "price": 50,
+    },
+    {
+      "name": "Red dress",
+      "picture": "images/products/jabjai01.jpg",
+      "old_price": 100,
+      "price": 50,
+    },
+  ];
 
   @override
-  Widget build(BuildContext context) {}
+  Widget build(BuildContext context) {
+    return GridView.builder(
+        itemCount: product_list.length,
+        gridDelegate:
+            new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Single_prod(
+              prod_name: product_list[index]['name'],
+              prod_pricture: product_list[index]['picture'],
+              prod_old_price: product_list[index]['old_price'],
+              prod_price: product_list[index]['price'],
+            ),
+          );
+        });
+  }
 }
 
-//class Single_prod extends StatelessWidget {
-//  final prod_name;
-//  final prod_picture;
-//  final prod_price;
-//  final prod_quantity;
-//
-//  Single_prod({
-//    this.prod_name,
-//    this.prod_picture,
-//    this.prod_price,
-//    this.prod_quantity,
-//  });
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Card(
-//      child: Hero(
-//        tag: new Text("hero 1"),
-//        child: Material(
-//          child: InkWell(
-//            onTap: () => Navigator.of(context).push(new MaterialPageRoute(
-//                builder: (context) => new ProductsDetailsPage(
-//                      product_detail_name: prod_name,
-//                      product_detail_picture: prod_picture,
-//                      product_detail_price: prod_price,
-//                      product_detail_quantity: prod_quantity,
-//                    ))),
-//            child: GridTile(
-//              footer: Container(
-//                color: Colors.white70,
-//                child: ListTile(
-//                  leading: Text(
-//                    prod_name,
-//                    style: TextStyle(fontWeight: FontWeight.bold),
-//                  ),
-//                  title: Text(
-//                    "ราคา " + "$prod_price\฿",
-//                    style: TextStyle(fontWeight: FontWeight.w800),
-//                  ),
-//                  subtitle: Text(
-//                    "คงเหลือ " + "$prod_quantity",
-//                    style: TextStyle(
-//                        color: Colors.red, fontWeight: FontWeight.w800),
-//                  ),
-//                ),
-//              ),
-//              child: Image.asset(
-//                prod_picture,
-//                fit: BoxFit.cover,
-//              ),
-//            ),
-//          ),
-//        ),
-//      ),
-//    );
-//  }
-//}
+class Single_prod extends StatelessWidget {
+  final prod_name;
+  final prod_pricture;
+  final prod_old_price;
+  final prod_price;
+
+  Single_prod({
+    this.prod_name,
+    this.prod_pricture,
+    this.prod_old_price,
+    this.prod_price,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Hero(
+        tag: new Text("hero1"),
+        child: Material(
+          child: InkWell(
+            onTap: () {},
+            child: GridTile(
+              footer: Container(
+                color: Colors.white70,
+                child: ListTile(
+                  leading: Text(
+                    prod_name,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  title: Text(
+                    "\$$prod_price",
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.w800),
+                  ),
+                  subtitle: Text(
+                    "\$$prod_old_price",
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w800,
+                        decoration: TextDecoration.lineThrough),
+                  ),
+                ),
+              ),
+              child: Image.asset(
+                prod_pricture,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

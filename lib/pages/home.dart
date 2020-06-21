@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posapp/api/user_api.dart';
+import 'package:posapp/bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:posapp/bloc/user_repository.dart';
 import 'package:posapp/notifier/auth_notifier.dart';
 import 'package:posapp/pages/cart.dart';
+import 'package:posapp/pages/page_login.dart';
 import 'package:posapp/pages/page_products.dart';
 import 'package:posapp/pages/page_report.dart';
 import 'package:posapp/pages/page_scan.dart';
 import 'package:posapp/pages/page_setting.dart';
+import 'package:posapp/services/functions.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
+import 'login_page.dart';
 
-class _HomePageState extends State<HomePage> {
+class HomePage extends StatelessWidget {
+  final String name;
+  final String email;
+  final UserRepository _userRepository;
+
+  HomePage(
+      {Key key, @required this.name, this.email, UserRepository userRepository})
+      : _userRepository = userRepository,
+        super(key: key);
   @override
   Widget build(BuildContext context) {
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     return Scaffold(
       appBar: new AppBar(
         iconTheme: new IconThemeData(color: Colors.purple),
@@ -33,24 +42,26 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             new UserAccountsDrawerHeader(
               accountName: Text(
-                authNotifier.user != null
-                    ? authNotifier.user.displayName
-                    : "USER",
+                "$name",
               ),
               decoration: BoxDecoration(
                 color: Colors.purple,
               ),
               accountEmail: Text(
-                authNotifier.user != null ? authNotifier.user.email : "Email",
+                "$email",
               ),
             ),
             InkWell(
-              onTap: () => signout(authNotifier),
+              onTap: () {
+                BlocProvider.of<AuthenticationBloc>(context).add(
+                  AuthenticationLoggedOut(),
+                );
+              },
               child: ListTile(
                 title: Text('Log out'),
                 leading: Icon(Icons.highlight_off),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -105,10 +116,9 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(18.0)),
                   color: Colors.purple, // button color
                   child: InkWell(
-                    onTap: () => Navigator.of(context).push(
-                        new MaterialPageRoute(
-                            builder: (context) =>
-                                new ProductsPage())), // button pressed
+                    onTap: () {
+                      changeScreen(context, ProductsPage());
+                    }, // button pressed
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

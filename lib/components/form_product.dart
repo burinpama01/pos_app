@@ -196,8 +196,8 @@ class _ProductFormState extends State<ProductForm> {
 
     _currentProduct.subIngredients ?? _subingredients;
 
-    uploadProductAndImage(
-        _currentProduct, widget.isUpdating, _imageFile, _onProductUploaded);
+//    uploadProductAndImage(
+//        _currentProduct, widget.isUpdating, _imageFile, _onProductUploaded);
 
     print("name: ${_currentProduct.name}");
     print("price: ${_currentProduct.price}");

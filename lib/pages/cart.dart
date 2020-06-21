@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:posapp/bloc/main_bloc.dart';
 import 'package:posapp/components/cart_products.dart';
+import 'package:posapp/pages/page_scan.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -19,10 +22,41 @@ class _CartState extends State<Cart> {
           style: TextStyle(
               color: Colors.purple, fontWeight: FontWeight.bold, fontSize: 30),
         ),
+        actions: [
+          FlatButton(
+            onPressed: () => Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => new ScanPage(),
+              ),
+            ),
+            child: Icon(
+              Icons.add_shopping_cart,
+              color: Colors.purple,
+            ),
+          ),
+        ],
       ),
-
       body: new Cart_Products(),
 
+//      ListView(
+//        children: <Widget>[
+//          MaterialButton(
+//            shape: RoundedRectangleBorder(
+//                borderRadius: BorderRadius.circular(18.0)),
+//            onPressed: () => ScanPage(),
+//            child: new Text(
+//              "เพิ่มสินค้า",
+//              style: TextStyle(
+//                  color: Colors.white,
+//                  fontWeight: FontWeight.bold,
+//                  fontSize: 20),
+//            ),
+//            color: Colors.orange,
+//          ),
+//
+//        ],
+//      ),
       bottomNavigationBar: new Container(
         height: 200,
         child: Material(

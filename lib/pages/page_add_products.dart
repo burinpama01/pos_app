@@ -5,7 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:posapp/bloc/main_bloc.dart';
 import 'package:posapp/components/product.dart';
 import 'package:posapp/db/category.dart';
 import 'package:posapp/db/product.dart';
@@ -19,6 +21,8 @@ class addProducts extends StatefulWidget {
 }
 
 class _addProductsState extends State<addProducts> {
+  MainBloc _mainBloc;
+
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   GlobalKey<FormState> _categoryFormkey = GlobalKey();
   GlobalKey<FormState> _formKey = GlobalKey();
@@ -44,27 +48,27 @@ class _addProductsState extends State<addProducts> {
 
   bool isLoading = false;
 
-  @override
-  void initState() {
-    _getCategories();
-//    _currentCategory = categoriesDropdown[0].value;
-  }
-
-  List<DropdownMenuItem<String>> getCategoriesDropdown() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (int i = 0; i < categories.length; i++) {
-      setState(() {
-        items.insert(
-            0,
-            DropdownMenuItem(
-              child: Text(categories[i].data ?? 'category'),
-              value: categories[i].data ?? 'category',
-            ));
-      });
-    }
-    print(items.length);
-    return items;
-  }
+//  @override
+//  void initState() {
+//    _getCategories();
+////    _currentCategory = categoriesDropdown[0].value;
+//  }
+//
+//  List<DropdownMenuItem<String>> getCategoriesDropdown() {
+//    List<DropdownMenuItem<String>> items = new List();
+//    for (int i = 0; i < categories.length; i++) {
+//      setState(() {
+//        items.insert(
+//            0,
+//            DropdownMenuItem(
+//              child: Text(categories[i].data ?? 'category'),
+//              value: categories[i].data ?? 'category',
+//            ));
+//      });
+//    }
+//    print(items.length);
+//    return items;
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,10 +188,6 @@ class _addProductsState extends State<addProducts> {
                                 padding: const EdgeInsets.all(10),
                                 child: TextFormField(
                                   controller: _typeTextController,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    WhitelistingTextInputFormatter.digitsOnly
-                                  ],
                                   decoration: InputDecoration(
                                       hintText: "Type",
                                       border: InputBorder.none),
@@ -370,44 +370,44 @@ class _addProductsState extends State<addProducts> {
     );
   }
 
-  void _categoryAlert() {
-    var alert = new AlertDialog(
-      content: Form(
-        key: _categoryFormkey,
-        child: TextFormField(
-          controller: catrgoryController,
-          // ignore: missing_return
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'category cannot be empty';
-            }
-            _formKey.currentState.reset();
-          },
-          decoration: InputDecoration(hintText: "add category"),
-        ),
-      ),
-      actions: [
-        FlatButton(
-          onPressed: () {
-            if (catrgoryController.text != null) {
-              _categoryService.createCategory(catrgoryController.text);
-            }
-            Fluttertoast.showToast(msg: 'category created');
-            Navigator.pop(context);
-          },
-          child: Text('ADD'),
-        ),
-        FlatButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('CANCEL'),
-        ),
-      ],
-    );
-
-    showDialog(context: context, builder: (_) => alert);
-  }
+//  void _categoryAlert() {
+//    var alert = new AlertDialog(
+//      content: Form(
+//        key: _categoryFormkey,
+//        child: TextFormField(
+//          controller: catrgoryController,
+//          // ignore: missing_return
+//          validator: (value) {
+//            if (value.isEmpty) {
+//              return 'category cannot be empty';
+//            }
+//            _formKey.currentState.reset();
+//          },
+//          decoration: InputDecoration(hintText: "add category"),
+//        ),
+//      ),
+//      actions: [
+//        FlatButton(
+//          onPressed: () {
+//            if (catrgoryController.text != null) {
+//              _categoryService.createCategory(catrgoryController.text);
+//            }
+//            Fluttertoast.showToast(msg: 'category created');
+//            Navigator.pop(context);
+//          },
+//          child: Text('ADD'),
+//        ),
+//        FlatButton(
+//          onPressed: () {
+//            Navigator.pop(context);
+//          },
+//          child: Text('CANCEL'),
+//        ),
+//      ],
+//    );
+//
+//    showDialog(context: context, builder: (_) => alert);
+//  }
 
   void _selectImage(Future<File> pickImage, int imageNumber) async {
     File tempImg = await pickImage;
@@ -471,17 +471,17 @@ class _addProductsState extends State<addProducts> {
     }
   }
 
-  _getCategories() async {
-    List<DocumentSnapshot> data = await _categoryService.getCategories();
-    print(data.length);
-    setState(() {
-      categories = data;
-      categoriesDropdown = getCategoriesDropdown();
-      _currentCategory = categories[0].data['category'];
-    });
-  }
-
-  changeSelectedCategory(String selectedCategory) {
-    setState(() => _currentCategory = selectedCategory);
-  }
+//  _getCategories() async {
+//    List<DocumentSnapshot> data = await _categoryService.getCategories();
+//    print(data.length);
+//    setState(() {
+//      categories = data;
+//      categoriesDropdown = getCategoriesDropdown();
+//      _currentCategory = categories[0].data['category'];
+//    });
+//  }
+//
+//  changeSelectedCategory(String selectedCategory) {
+//    setState(() => _currentCategory = selectedCategory);
+//  }
 }
