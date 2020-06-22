@@ -1,19 +1,20 @@
-import 'dart:async';
-import 'dart:io' show Platform;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:posapp/bloc/main_bloc.dart';
+import 'package:posapp/bloc/external/external_bloc.dart';
 
-class ScanPage extends StatelessWidget {
-  MainBloc _mainBloc;
+class ScannerPage extends StatefulWidget {
+  ScannerPage({Key key}) : super(key: key);
 
   @override
+  _ScannerPageState createState() => _ScannerPageState();
+}
+
+class _ScannerPageState extends State<ScannerPage> {
+  ExternalBloc _externalBloc;
+  @override
   Widget build(BuildContext context) {
-//    _mainBloc = BlocProvider.of<MainBloc>(context);
+    _externalBloc = BlocProvider.of<ExternalBloc>(context);
 
     return Scaffold(
       appBar: new AppBar(
@@ -30,18 +31,15 @@ class ScanPage extends StatelessWidget {
             icon: Icon(Icons.camera),
             tooltip: "Scan",
             onPressed: () {
-              _mainBloc.add(OpenScannerMainEvent());
+              _externalBloc.add(OpenScannerExternalEvent());
             },
           )
         ],
       ),
-      body: BlocBuilder<MainBloc, MainState>(
+      body: BlocBuilder<ExternalBloc, ExternalState>(
         builder: (BuildContext context, _state) {
-          print("1");
-          return Container(
-            color: Colors.green,
-          );
-          /*if (_state is NormalMainState) {
+          print(_state);
+          if (_state is NormalExternalState) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +53,7 @@ class ScanPage extends StatelessWidget {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      //_mainBloc.add(OpenScannerMainEvent());
+                      _externalBloc.add(OpenScannerExternalEvent());
                     },
                     color: Colors.blue,
                     elevation: 0,
@@ -70,10 +68,9 @@ class ScanPage extends StatelessWidget {
             );
           } else {
             return Container(
-              color: Colors.black,
+              color: Colors.red,
             );
           }
-        */
         },
       ),
     );

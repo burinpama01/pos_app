@@ -6,6 +6,7 @@ import 'package:posapp/pages/page_login.dart';
 import 'package:provider/provider.dart';
 import 'bloc//main_bloc.dart';
 import 'bloc/authentication_bloc/authentication_bloc.dart';
+import 'bloc/external/external_bloc.dart';
 import 'bloc/simple_bloc_delegate.dart';
 import 'bloc/user_repository.dart';
 import 'components/loading_indicator.dart';
@@ -18,23 +19,8 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final UserRepository userRepository = UserRepository();
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider<MainBloc>(
-          create: (context) => MainBloc()
-            ..add(
-              InitialMainEvent(),
-            ),
-        ),
-        BlocProvider(
-          create: (context) =>
-              AuthenticationBloc(userRepository: userRepository)
-                ..add(
-                  AuthenticationStarted(),
-                ),
-        )
-      ],
-      child: MyApp(userRepository: userRepository),
+    MyApp(
+      userRepository: userRepository,
     ),
   );
 }
@@ -49,23 +35,40 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        // ignore: missing_return
-        builder: (context, state) {
-          if (state is AuthenticationInitial) {
-            return SplashScreen();
-          }
-          if (state is AuthenticationFailure) {
-            return LoginScreen(
-              userRepository: _userRepository,
-            );
-          }
-          if (state is AuthenticationSuccess) {
-            return HomePage();
-          }
-        },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ExternalBloc>(
+          create: (context) => ExternalBloc()
+            ..add(
+              InitialExternalEvent(),
+            ),
+        ),
+        BlocProvider(
+          create: (context) =>
+              AuthenticationBloc(userRepository: _userRepository)
+                ..add(
+                  AuthenticationStarted(),
+                ),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          // ignore: missing_return
+          builder: (context, state) {
+            if (state is AuthenticationInitial) {
+              return SplashScreen();
+            }
+            if (state is AuthenticationFailure) {
+              return LoginScreen(
+                userRepository: _userRepository,
+              );
+            }
+            if (state is AuthenticationSuccess) {
+              return HomePage();
+            }
+          },
+        ),
       ),
     );
   }

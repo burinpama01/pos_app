@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posapp/bloc/main_bloc.dart';
 import 'package:posapp/components/cart_products.dart';
 import 'package:posapp/pages/page_scan.dart';
+import 'package:posapp/pages/scanner_page.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class _CartState extends State<Cart> {
             onPressed: () => Navigator.push(
               context,
               new MaterialPageRoute(
-                builder: (context) => new ScanPage(),
+                builder: (context) => new ScannerPage(),
               ),
             ),
             child: Icon(
